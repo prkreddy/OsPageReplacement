@@ -19,6 +19,7 @@ import org.iiitb.mt2013.os.conts.Constants;
 public class CopyOfHomeFramePanel extends JFrame implements ActionListener
 {
 
+// updated the file
 	JLabel mainText;
 	JLabel memorySizeLabel, pageSizeLabel, pageRefLabel;
 	JLabel noOfFrameLabel, noOfFrameLabel1;

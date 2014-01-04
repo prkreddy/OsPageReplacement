@@ -19,6 +19,18 @@ public class MemoryGraphicView extends JPanel
 
 	private Map<String, List<MemoryPrint>> algoMememoryPrints;
 
+	private Map<String, Long> noOfFramesMap;
+
+	public Map<String, Long> getNoOfFramesMap( )
+	{
+		return noOfFramesMap;
+	}
+
+	public void setNoOfFramesMap(Map<String, Long> noOfFramesMap)
+	{
+		this.noOfFramesMap = noOfFramesMap;
+	}
+
 	private List<String> algoNames;
 
 	public List<String> getAlgoNames( )
@@ -84,6 +96,7 @@ public class MemoryGraphicView extends JPanel
 		algoMememoryPrints = new HashMap<String, List<MemoryPrint>>();
 		hitCount = new HashMap<String, Long>();
 		algoNames = new ArrayList<String>();
+		noOfFramesMap=new HashMap<String, Long>();
 	}
 
 	public Map<String, List<MemoryPrint>> getAlgoMememoryPrints( )
@@ -123,9 +136,10 @@ public class MemoryGraphicView extends JPanel
 		boolean printPageRef = false;
 
 		drawHeaderLines(g, fm, font);
-
+		long noOFframes = 0;
 		for (String algoName : algoNames)
 		{
+			noOFframes = this.getNoOfFramesMap().get(algoName);
 			// algoName = iterator.next();
 			g.setColor(Color.BLACK);
 			memoryPrints = algoMememoryPrints.get(algoName);
@@ -177,7 +191,8 @@ public class MemoryGraphicView extends JPanel
 					pointer = memoryPrints.get(i).getPointer();
 					pageFault = memoryPrints.get(i).isPageFault();
 					pageReferenced = memoryPrints.get(i).getPageReplacedPointer();
-					for (j = -1; j < frames.size(); j++)
+
+					for (j = -1; j < noOFframes; j++)
 					{
 
 						// memory prints view varies with maxElementWidth+

@@ -100,7 +100,7 @@ public class PgReplaceSimulator implements ActionListener
 
 				memoryPrints = pageReplacementAlgo.executeAlgo();
 
-				updateMemoryGraphicView(algoName, memoryPrints, memoryGraphicView);
+				updateMemoryGraphicView(algoName, memoryPrints, memoryGraphicView, memorySize/pageSize);
 				pagefault.add(pageReplacementAlgo.getPageFaultRate() * 100);
 				algoname.add(algoName);
 			}
@@ -130,7 +130,7 @@ public class PgReplaceSimulator implements ActionListener
 							algoName, windowSize);
 					memoryPrints = pageReplacementAlgo.executeAlgo();
 
-					updateMemoryGraphicView(algoName + "_" + memorySize, memoryPrints, memoryGraphicView);
+					updateMemoryGraphicView(algoName + "_" + memorySize, memoryPrints, memoryGraphicView,memorySize);
 					pagefault.add(pageReplacementAlgo.getPageFaultRate() * 100);
 					algoname.add(algoName + "_" + memorySize);
 				} else
@@ -139,7 +139,7 @@ public class PgReplaceSimulator implements ActionListener
 							algoName, windowSize);
 					memoryPrints = pageReplacementAlgo.executeAlgo();
 
-					updateMemoryGraphicView(algoName + "_" + noOfFrame2, memoryPrints, memoryGraphicView);
+					updateMemoryGraphicView(algoName + "_" + noOfFrame2, memoryPrints, memoryGraphicView,noOfFrame2);
 					pagefault.add(pageReplacementAlgo.getPageFaultRate() * 100);
 					algoname.add(algoName + "_" + noOfFrame2);
 				}
@@ -155,10 +155,12 @@ public class PgReplaceSimulator implements ActionListener
 		buildFrame(memoryGraphicView);
 	}
 
-	void updateMemoryGraphicView(String algoName, List<MemoryPrint> memoryPrints, MemoryGraphicView memoryGraphicView)
+	void updateMemoryGraphicView(String algoName, List<MemoryPrint> memoryPrints, MemoryGraphicView memoryGraphicView, long noOfFrames)
 	{
 
 		memoryGraphicView.getAlgoMememoryPrints().put(algoName, memoryPrints);
+		
+		memoryGraphicView.getNoOfFramesMap().put(algoName, noOfFrames);
 
 		memoryGraphicView.getAlgoNames().add(algoName);
 

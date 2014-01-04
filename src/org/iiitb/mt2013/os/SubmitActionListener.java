@@ -117,7 +117,11 @@ public class SubmitActionListener implements ActionListener
 			pgsim.setPageReferences(values);
 			if (panel.getComparePolicies().isSelected())
 			{
-				pgsim.setWindowSize(Long.parseLong(panel.getWindowSizeField().getText()));
+
+				if (panel.getWorkSetModel().isSelected())
+				{
+					pgsim.setWindowSize(Long.parseLong(panel.getWindowSizeField().getText()));
+				}
 				pgsim.startSimulator(algoNames);
 			} else
 			{
@@ -132,11 +136,16 @@ public class SubmitActionListener implements ActionListener
 
 					}
 				}
+				if (panel.getWorkSetModel().isSelected())
+				{
+					pgsim.setWindowSize(Long.parseLong(panel.getWindowSizeField().getText()));
+				}
 				pgsim.startSimulator(newAlgoName, Long.parseLong(panel.getNoOFFrameField1().getText()));
 			}
 
 		} catch (Exception ex)
 		{
+			ex.printStackTrace();
 
 		}
 	}

@@ -1,7 +1,10 @@
 package org.iiitb.mt2013.os.pageAlgo.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.iiitb.model.bean.InvalidMemoryUnitException;
 import org.iiitb.mt2013.os.algo.PageReplacementAlgo;
@@ -19,10 +22,12 @@ public class WorkingSetModelImpl extends PageReplacementAlgo
 	MemoryPrint memoryPrint;
 	int pageReference = -1;
 	long windowSize = 0;
+	List<Integer> windowList;
 
 	public WorkingSetModelImpl(List<Integer> pageNos, long memorySize, long pageSize, String algoName, long windowSize)
 	{
 		this.algoName = algoName;
+		this.windowList = pageNos;
 		if (pageNos.size() > 0)
 		{
 			this.pages = new ArrayList<Page>();
@@ -55,6 +60,7 @@ public class WorkingSetModelImpl extends PageReplacementAlgo
 		List<MemoryPrint> pgRefMemPrints = new ArrayList<MemoryPrint>();
 		for (Page page : this.pages)
 		{
+
 			frame = this.memory.get(page.getAddress());
 			/*
 			 * checking whether coming page is already exists in Frames if
@@ -64,7 +70,10 @@ public class WorkingSetModelImpl extends PageReplacementAlgo
 			{
 				frame.setPageReferenceBit(count);
 				page.setPageFaultExists(false);
-				pageReference = circularQueue.indexOf(frame);
+				// pageReference = circularQueue.indexOf(frame);
+				Collections.sort(circularQueue);
+				adjustFrames(circularQueue, count);
+				pageReference = circularQueue.size() - 1;
 				pgRefMemPrints.add(printFramesInMemory(page));
 				++count;
 
@@ -80,7 +89,7 @@ public class WorkingSetModelImpl extends PageReplacementAlgo
 				circularQueue.add(frame);
 				frame.setPageReferenceBit(count);
 				// pointer = (pointer + 1) % this.noOfFrames;
-				pageReference = circularQueue.indexOf(frame);
+				// pageReference = circularQueue.indexOf(frame);
 				--this.freeFrames;
 				page.setPageFaultExists(true);
 				this.memory.add(frame);
@@ -112,9 +121,12 @@ public class WorkingSetModelImpl extends PageReplacementAlgo
 				this.memory.remove(circularQueue.get(pointer.intValue()).getAddress());
 				circularQueue.set(pointer.intValue(), frame);
 				this.memory.add(frame);
-				pageReference = circularQueue.indexOf(frame);
+				// pageReference = circularQueue.indexOf(frame);
 				pointer = (pointer + 1) % this.noOfFrames;
 			}
+			Collections.sort(circularQueue);
+			adjustFrames(circularQueue, count);
+			pageReference = circularQueue.size() - 1;
 			pgRefMemPrints.add(printFramesInMemory(page));
 			++count;
 		}
@@ -144,5 +156,33 @@ public class WorkingSetModelImpl extends PageReplacementAlgo
 		System.out.println("\n\n");
 
 		return memoryPrint;
+	}
+
+	public void adjustFrames(List<Frame> circularQueue, int count) throws InvalidMemoryUnitException
+	{
+
+		int temp = count;
+		long windowtemp = windowSize + 1;
+		Set<Integer> tempSet = new HashSet<Integer>();
+		List<Frame> tempFrameList = new ArrayList<Frame>(circularQueue);
+		for (; windowtemp > 0 && temp >= 0; windowtemp--, temp--)
+		{
+			tempSet.add(windowList.get(temp));
+		}
+		for (Frame frame : circularQueue)
+		{
+
+			if (!tempSet.contains(Integer.parseInt(frame.getAddress() + "")))
+			{
+				tempFrameList.remove(frame);
+				this.memory.remove(frame.getAddress());
+			}
+
+		}
+		circularQueue.clear();
+
+		Collections.sort(tempFrameList);
+		circularQueue.addAll(tempFrameList);
+		this.freeFrames = this.noOfFrames - circularQueue.size();
 	}
 }

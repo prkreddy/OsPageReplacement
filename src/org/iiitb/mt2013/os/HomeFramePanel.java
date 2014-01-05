@@ -1,18 +1,16 @@
 package org.iiitb.mt2013.os;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.iiitb.mt2013.os.conts.Constants;
@@ -71,9 +69,11 @@ public class HomeFramePanel extends JFrame implements ActionListener
 
 	ButtonGroup btnGroup, btnGroup1;
 
-	JTextField pageReferencesField, noOFFrameField, noOFFrameField1, windowSizeField;
+	JTextField noOFFrameField, noOFFrameField1, windowSizeField;
+	JTextArea pageReferencesField;
 	JButton button, reset;
-	JPanel panel;
+
+	Container cp;
 
 	public HomeFramePanel()
 	{
@@ -93,10 +93,11 @@ public class HomeFramePanel extends JFrame implements ActionListener
 		allPolicies = new JRadioButton("do want to apply above testing on all polices");
 		specificPolicies = new JRadioButton(
 				"do want to apply above testing only on specific polices, pls select them individually");
-		pageReferencesField = new JTextField();
+		pageReferencesField = new JTextArea();
 		button = new JButton("submit");
 		reset = new JButton("reset");
-		panel = new JPanel();
+		cp = getContentPane();
+		cp.setLayout(null);
 
 		fifo = getCheckBox(Constants.FIFO_REPLACEMENT_ALGO);
 		lru = getCheckBox(Constants.LRU_REPLACEMENT_ALGO);
@@ -105,21 +106,16 @@ public class HomeFramePanel extends JFrame implements ActionListener
 		workSetModel = getCheckBox(Constants.WORKINGSETMODEL);
 		clock = getCheckBox(Constants.CLOCK_REPLACEMENT_ALGO_NAME);
 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(700, 500);
-
-		panel.add(mainText);
 		btnGroup.add(comparePolicies);
 		btnGroup.add(compareBeladys);
 		btnGroup1.add(allPolicies);
 		btnGroup1.add(specificPolicies);
-		panel.add(comparePolicies);
-		panel.add(compareBeladys);
 
 		comparePolicies.addActionListener(this);
 		compareBeladys.addActionListener(this);
 		allPolicies.addActionListener(policesActionLister);
 		specificPolicies.addActionListener(policesActionLister);
+		workSetModel.addActionListener(new WorkSetActionListener(this));
 		this.getNoOFFrameField().setEditable(false);
 		this.getPageReferencesField().setEditable(false);
 		this.getNoOFFrameField1().setEditable(false);
@@ -132,35 +128,112 @@ public class HomeFramePanel extends JFrame implements ActionListener
 		{
 			this.getCheckBox(name).setEnabled(false);
 		}
-	
-		panel.add(noOfFrameLabel);
-		panel.add(noOFFrameField);
-		panel.add(noOfFrameLabel1);
-		panel.add(noOFFrameField1);
-		panel.add(pageRefLabel);
-		panel.add(pageReferencesField);
-		panel.add(allPolicies);
-		panel.add(specificPolicies);
 
-		panel.add(fifo);
-		panel.add(lru);
-		panel.add(optimal);
-		panel.add(clock);
-		panel.add(count);
-		panel.add(workSetModel);
-		workSetModel.addActionListener(new WorkSetActionListener(this));
-		panel.add(windowSizelabel);
-		panel.add(windowSizeField);
-		panel.add(button);
+		mainText.setBounds(10, 20, 500, 50);
+		comparePolicies.setBounds(20, 60, 250, 50);
+		compareBeladys.setBounds(300, 60, 300, 50);
+		noOfFrameLabel.setBounds(30, 100, 150, 50);
+		noOFFrameField.setBounds(130, 115, 100, 20);
 
-		panel.add(reset);
+		noOfFrameLabel1.setBounds(300, 100, 150, 50);
+		noOFFrameField1.setBounds(400, 115, 100, 20);
+
+		pageRefLabel.setBounds(30, 130, 150, 50);
+		pageReferencesField.setBounds(145, 150, 500, 60);
+		
+		
+		allPolicies.setBounds(20, 240, 500, 40);
+		specificPolicies.setBounds(20, 270, 500, 40);
+		
+		
+		fifo.setBounds(30, 310, 180, 30);
+		lru.setBounds(210, 310, 180, 30);
+		optimal.setBounds(390, 310, 180, 30);
+		
+		clock.setBounds(30, 340, 180, 30);
+		count.setBounds(210, 340, 180, 30);
+		workSetModel.setBounds(390, 340, 180, 30);
+		windowSizelabel.setBounds(150, 380, 100, 20);
+		windowSizeField.setBounds(260, 380, 100, 20);
+		button.setBounds(150, 420, 100, 30);
+		reset.setBounds(280, 420, 100, 30);
+		
+		cp.add(mainText);
+		cp.add(comparePolicies);
+		cp.add(compareBeladys);
+		cp.add(noOfFrameLabel);
+		cp.add(noOFFrameField);
+		cp.add(noOfFrameLabel1);
+		cp.add(noOFFrameField1);
+		cp.add(pageRefLabel);
+		cp.add(pageReferencesField);
+		cp.add(allPolicies);
+		cp.add(specificPolicies);
+
+		cp.add(fifo);
+		cp.add(lru);
+		cp.add(optimal);
+		cp.add(clock);
+		cp.add(count);
+		cp.add(workSetModel);
+
+		cp.add(windowSizelabel);
+		cp.add(windowSizeField);
+		cp.add(button);
+
+		cp.add(reset);
 
 		button.addActionListener(new SubmitActionListener(this));
 		reset.addActionListener(new ResetActionLister(this));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		this.getContentPane().add(panel);
+		// cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
 
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(700, 500);
+		setTitle("Page Replacement Policies");
+		this.setLocation(200, 150);
+		setResizable(true);
 		this.setVisible(true);
+
+		/*
+		 * setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); setSize(600,
+		 * 500);// Window size
+		 * setTitle(PropertiesUtil.getUICompName("HOMETITLE"));// Title for the
+		 * // Frame
+		 * 
+		 * setLocation(200, 150);// Set the Position on the Screen
+		 * setResizable(true);// Resize of window is disabled.
+		 * setVisible(true);// window enabled.
+		 */
+	}
+
+	public PoliciesSelectionActionListener getPolicesActionLister( )
+	{
+		return policesActionLister;
+	}
+
+	public void setPolicesActionLister(PoliciesSelectionActionListener policesActionLister)
+	{
+		this.policesActionLister = policesActionLister;
+	}
+
+	public JTextArea getPageReferencesField( )
+	{
+		return pageReferencesField;
+	}
+
+	public void setPageReferencesField(JTextArea pageReferencesField)
+	{
+		this.pageReferencesField = pageReferencesField;
+	}
+
+	public Container getCp( )
+	{
+		return cp;
+	}
+
+	public void setCp(Container cp)
+	{
+		this.cp = cp;
 	}
 
 	public JLabel getWindowSizelabel( )
@@ -339,16 +412,6 @@ public class HomeFramePanel extends JFrame implements ActionListener
 	public void setPageRefLabel(JLabel pageRefLabel)
 	{
 		this.pageRefLabel = pageRefLabel;
-	}
-
-	public JTextField getPageReferencesField( )
-	{
-		return pageReferencesField;
-	}
-
-	public void setPageReferencesField(JTextField pageReferencesField)
-	{
-		this.pageReferencesField = pageReferencesField;
 	}
 
 	public JButton getButton( )

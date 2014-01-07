@@ -1,9 +1,12 @@
 package org.iiitb.mt2013.os;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,6 +21,10 @@ import org.iiitb.mt2013.os.conts.Constants;
 public class HomeFramePanel extends JFrame implements ActionListener
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JLabel mainText;
 	JLabel pageRefLabel;
 	JLabel noOfFrameLabel, noOfFrameLabel1, windowSizelabel;
@@ -71,7 +78,7 @@ public class HomeFramePanel extends JFrame implements ActionListener
 
 	JTextField noOFFrameField, noOFFrameField1, windowSizeField;
 	JTextArea pageReferencesField;
-	JButton button, reset;
+	JButton button, reset, help;
 
 	Container cp;
 
@@ -79,23 +86,36 @@ public class HomeFramePanel extends JFrame implements ActionListener
 	{
 		mainText = new JLabel("Page Replacement Policies");
 		policesActionLister = new PoliciesSelectionActionListener(this);
-		pageRefLabel = new JLabel("pageReference");
-		noOfFrameLabel = new JLabel("noOfFrames1");
-		noOfFrameLabel1 = new JLabel("noOfFrames2");
-		windowSizelabel = new JLabel("window size");
+
+		pageRefLabel = new JLabel("Page References");
+		noOfFrameLabel = new JLabel("No of Frames1");
+		noOfFrameLabel1 = new JLabel("No of Frames2");
+		windowSizelabel = new JLabel("Window size");
+
 		noOFFrameField = new JTextField();
+		noOFFrameField.setSelectedTextColor(Color.cyan);
+		noOFFrameField.setSelectionColor(Color.RED);
+
 		noOFFrameField1 = new JTextField();
+		noOFFrameField1.setSelectedTextColor(Color.cyan);
+		noOFFrameField1.setSelectionColor(Color.RED);
+
 		windowSizeField = new JTextField();
+		windowSizeField.setSelectedTextColor(Color.cyan);
+		windowSizeField.setSelectionColor(Color.RED);
+
 		btnGroup = new ButtonGroup();
 		btnGroup1 = new ButtonGroup();
 		comparePolicies = new JRadioButton("Test PageReplacement Policies");
 		compareBeladys = new JRadioButton("Test Belady's Anomaly on Policies");
-		allPolicies = new JRadioButton("do want to apply above testing on all polices");
-		specificPolicies = new JRadioButton(
-				"do want to apply above testing only on specific polices, pls select them individually");
+
+		allPolicies = new JRadioButton("Apply above testing on all Page Rep. polices");
+		specificPolicies = new JRadioButton("Apply above testing on Page Rep. polices individually");
+
 		pageReferencesField = new JTextArea();
-		button = new JButton("submit");
-		reset = new JButton("reset");
+		button = new JButton("Submit");
+		reset = new JButton("Reset");
+		help = new JButton("Help");
 		cp = getContentPane();
 		cp.setLayout(null);
 
@@ -129,35 +149,40 @@ public class HomeFramePanel extends JFrame implements ActionListener
 			this.getCheckBox(name).setEnabled(false);
 		}
 
-		mainText.setBounds(10, 20, 500, 50);
+		mainText.setBounds(100, 0, 500, 50);
+		mainText.setFont(new Font("Papyrus", Font.ROMAN_BASELINE, 30));
+		mainText.setForeground(Color.GRAY);
+
 		comparePolicies.setBounds(20, 60, 250, 50);
 		compareBeladys.setBounds(300, 60, 300, 50);
 		noOfFrameLabel.setBounds(30, 100, 150, 50);
-		noOFFrameField.setBounds(130, 115, 100, 20);
+		noOFFrameField.setBounds(140, 115, 100, 20);
 
 		noOfFrameLabel1.setBounds(300, 100, 150, 50);
-		noOFFrameField1.setBounds(400, 115, 100, 20);
+		noOFFrameField1.setBounds(410, 115, 100, 20);
 
-		pageRefLabel.setBounds(30, 130, 150, 50);
-		pageReferencesField.setBounds(145, 150, 500, 60);
-		
-		
+		pageRefLabel.setBounds(30, 140, 150, 50);
+		pageReferencesField.setBounds(160, 160, 500, 60);
+		pageReferencesField.setBorder(BorderFactory.createLineBorder(Color.black));
+
 		allPolicies.setBounds(20, 240, 500, 40);
 		specificPolicies.setBounds(20, 270, 500, 40);
-		
-		
+
 		fifo.setBounds(30, 310, 180, 30);
 		lru.setBounds(210, 310, 180, 30);
 		optimal.setBounds(390, 310, 180, 30);
-		
+
 		clock.setBounds(30, 340, 180, 30);
 		count.setBounds(210, 340, 180, 30);
 		workSetModel.setBounds(390, 340, 180, 30);
+
 		windowSizelabel.setBounds(150, 380, 100, 20);
 		windowSizeField.setBounds(260, 380, 100, 20);
-		button.setBounds(150, 420, 100, 30);
-		reset.setBounds(280, 420, 100, 30);
-		
+
+		button.setBounds(280, 420, 100, 30);
+		reset.setBounds(380, 420, 100, 30);
+		help.setBounds(600, 10, 100, 20);
+
 		cp.add(mainText);
 		cp.add(comparePolicies);
 		cp.add(compareBeladys);
@@ -182,11 +207,11 @@ public class HomeFramePanel extends JFrame implements ActionListener
 		cp.add(button);
 
 		cp.add(reset);
-
+		cp.add(help);
 		button.addActionListener(new SubmitActionListener(this));
 		reset.addActionListener(new ResetActionLister(this));
 		// cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
-
+		help.addActionListener(new HelpActionListener(this));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(700, 500);
 		setTitle("Page Replacement Policies");
@@ -286,10 +311,14 @@ public class HomeFramePanel extends JFrame implements ActionListener
 		this.noOFFrameField1 = noOFFrameField1;
 	}
 
+	public void setPageRefToolTipText( )
+	{
+		this.pageReferencesField.setToolTipText("Entry Format: 1,2,1,2,3,4,5,6,7");
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		System.out.println("action performed");
 		if (this.getComparePolicies().isSelected())
 		{
 
@@ -300,6 +329,8 @@ public class HomeFramePanel extends JFrame implements ActionListener
 			this.getButton().setEnabled(true);
 			this.getAllPolicies().setEnabled(true);
 			this.getSpecificPolicies().setEnabled(true);
+			this.setPageRefToolTipText();
+
 			reset.setEnabled(true);
 
 		} else if (this.getCompareBeladys().isSelected())
@@ -310,6 +341,8 @@ public class HomeFramePanel extends JFrame implements ActionListener
 			this.getPageReferencesField().setEditable(true);
 			this.getAllPolicies().setEnabled(true);
 			this.getSpecificPolicies().setEnabled(true);
+
+			this.setPageRefToolTipText();
 			reset.setEnabled(true);
 		}
 	}

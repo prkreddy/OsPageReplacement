@@ -20,7 +20,7 @@ public class PoliciesSelectionActionListener implements ActionListener
 	{
 		if (panel.getAllPolicies().isSelected())
 		{
-			System.out.println("all polices selected");
+//			System.out.println("all polices selected");
 			for (String checkBox : Constants.ALGORITHMS_NAMES)
 			{
 				panel.getCheckBox(checkBox).setEnabled(true);
@@ -30,7 +30,7 @@ public class PoliciesSelectionActionListener implements ActionListener
 
 		} else if (panel.getSpecificPolicies().isSelected())
 		{
-			System.out.println("specific selected");
+//			System.out.println("specific selected");
 			for (String checkBox : Constants.ALGORITHMS_NAMES)
 			{
 				panel.getCheckBox(checkBox).setEnabled(true);

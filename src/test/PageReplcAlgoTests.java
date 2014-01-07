@@ -58,7 +58,7 @@ public class PageReplcAlgoTests
 
 	}
 
-	@Test
+	 @Test
 	public void clockReplacAlgoTest( ) throws InvalidMemoryUnitException
 	{
 		pageReplacementAlgo = new ClockReplacmentImpl(pgsim.getPageReferences(), pgsim.getMemorySize(),
@@ -69,7 +69,7 @@ public class PageReplcAlgoTests
 		checkResults("CLOCK_");
 	}
 
-	@Test
+	 @Test
 	public void optimumReplacAlgoTest( ) throws InvalidMemoryUnitException
 	{
 		pageReplacementAlgo = new OptimumReplacmentImpl(pgsim.getPageReferences(), pgsim.getMemorySize(),
@@ -81,7 +81,7 @@ public class PageReplcAlgoTests
 
 	}
 
-	@Test
+	 @Test
 	public void fifoReplacAlgoTest( ) throws InvalidMemoryUnitException
 	{
 		pageReplacementAlgo = new FIFOImpl(pgsim.getPageReferences(), pgsim.getMemorySize(), pgsim.getPageSize(),
@@ -93,7 +93,7 @@ public class PageReplcAlgoTests
 
 	}
 
-	@Test
+	 @Test
 	public void lruReplacAlgoTest( ) throws InvalidMemoryUnitException
 	{
 		pageReplacementAlgo = new LRUImpl(pgsim.getPageReferences(), pgsim.getMemorySize(), pgsim.getPageSize(),
@@ -105,7 +105,7 @@ public class PageReplcAlgoTests
 
 	}
 
-	@Test
+	 @Test
 	public void countReplacAlgoTest( ) throws InvalidMemoryUnitException
 	{
 		pageReplacementAlgo = new CountReplacmentImpl(pgsim.getPageReferences(), pgsim.getMemorySize(),
@@ -135,4 +135,5 @@ public class PageReplcAlgoTests
 
 		}
 	}
+
 }

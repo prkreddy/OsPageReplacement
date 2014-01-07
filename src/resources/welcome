@@ -1,0 +1,82 @@
+
+
+Welcome to Page Replacement Policies Virtual Learning through Academic Project!
+
+This project is entirely devoted to the learning aspects of page replacement policies. Keeping the layman in mind, this project is designed.
+
+Before going through the practical learning, let us look at some of the jargon related to page replacement techninque and also the need for the page replacement design.
+--------------------------------------------------------------------------------------------------------------------------------------------
+What is page replacement and why there is a need for it?
+ 
+There is a difference in cost levels in memories. For example, cache cost more than tape drive. This difference comes in access speed of the device. So it is not possible for the user to maintain fast access memory device to store the bulk data. So as to serve the purpose of fast access and expedite processing memory has to be managed in some way, that is replacement of what is there before with what is required now. Page replacement technique became popular for the systems, where multi-tasking has to be done.
+--------------------------------------------------------------------------------------------------------------------------------------------
+What is a page?
+
+A page is a fixed-length contiguous block of virtual memory.
+--------------------------------------------------------------------------------------------------------------------------------------------
+What is a Frame?	
+
+It is a fixed sized block in physical memory space, or a block of central storage.
+--------------------------------------------------------------------------------------------------------------------------------------------
+What is dirty bit?
+
+A dirty bit is a flag that indicates whether an attribute needs to be updated. Such situations usually occur when a bit in a memory cache or virtual memory page that has been changed by a processor but has not been updated in the storage.  
+--------------------------------------------------------------------------------------------------------------------------------------------
+What are Algorithms used in Page replacement?
+
+1. LRU Algorithm
+
+A good approximation to the optimal algorithm is based on the observation that pages that have been heavily used in the last few instructions will probably be heavily used again in the next few. Conversely, pages that have not been used forages will probably remain unused for a long time. This idea suggests a realizable algorithm: when a page fault occurs, throw out the page that has been unused for
+the longest time. This strategy is called LRU (Least Recently Used) paging. Although LRU is theoretically realizable, it is not cheap. To fully implement LRU, it is necessary to maintain a linked list of all pages in memory, with the most recently used page at the front and the least recently used page at the rear. The difficulty is that the list must be updated on every memory reference. Find- ing a page in the list, deleting it, and then moving it to the front is a very time con- suming operation, even in hardware (assuming that such hardware could be built).
+However, there are other ways to implement LRU with special hardware. Let us consider the simplest way first. This method requires equipping the hardware with a 64-bit counter, C, that is automatically incremented after each instruction. Furthermore, each page table entry must also have a field large enough to contain the counter. After each memory reference, the current value of C is stored in the page table entry for the page just referenced. When a page fault occurs, the operating system examines all the counters in the page table to find the lowest one. That page is the least recently used.
+
+
+2. FIFO Algorithm
+
+The First-In, First-Out (FIFO) Page Replacement Algorithm, Another low-overhead paging algorithm is the FIFO (First-In, First-Out)
+algorithm. To illustrate how this works, consider a supermarket that has enough shelves to display exactly k different products. One day, some company intro-duces a new convenience food—instant, freeze-dried, organic yogurt that can be reconstituted in a microwave oven. It is an immediate success, so our finite supermarket has to get rid of one old product in order to stock it. One possibility is to find the product that the supermarket has been stocking the longest (i.e., something it began selling 120 years ago) and get rid of it on the grounds that no one is interested any more. In effect, the supermarket maintains a linked list of all the products it currently sells in the order they were introduced. The new one goes on the back of the list; the one at the front of the list is dropped. As a page replacement algorithm, the same idea is applicable. The operating system maintains a list of all pages currently in memory, with the page at the head of the list the oldest one and the page at the tail the most recent arrival. On a page fault, the page at the head is removed and the new page added to the tail of the list. When applied to stores, FIFO might remove mustache wax, but it might also remove flour, salt, or butter. When applied to computers the same problem arises.
+For this reason, FIFO in its pure form is rarely used.
+
+3. Clock page replacement algorithm
+The Clock Page Replacement Algorithm, Although second chance is a reasonable algorithm, it is unnecessarily ineffi-cient because it is constantly moving pages around on its list. A better approach is to keep all the page frames on a circular list in the form of a clock. A hand points to the oldest page. When a page fault occurs, the page being pointed to by the hand is inspected. If its R bit is 0, the page is evicted, the new page is inserted into the clock in its place, and the hand is advanced one position. If R is 1, it is cleared and the hand is advanced to the next page. This process is repeated until a page is found with R = 0. Not surprisingly, this algorithm is called clock. It differs from second chance only in the implementation.
+
+
+4. Working set based replacement algorithm
+
+The basic working set algorithm is cumbersome since the entire page table has to be scanned at each page fault until a suitable candidate is located. An improved algorithm, that is based on the clock algorithm but also uses the work-ing set information is called WSClock (Carr and Hennessey, 1981). Due to its simplicity of implementation and good performance, it is widely used in practice. The data structure needed is a circular list of page frames, as in the clock algorithm. Initially, this list is empty. When the first page is loaded, it is added to the list. As more pages are added, they go into the list to form a ring. Each entry contains the Time of last use field from the basic working set algorithm, as well as the R bit (shown) and the M bit (not shown). As with the clock algorithm, at each page fault the page pointed to by the
+hand is examined first. If the R bit is set to 1, the page has been used during the current tick so it is not an ideal candidate to remove. The R bit is then set to 0, the hand advanced to the next page, and the algorithm repeated for that page. The
+state after this sequence of events . Now consider what happens if the page pointed to has R = 0, as shown in If the age is greater than τ and the page is clean, it is not in the work- ing set and a valid copy exists on the disk. The page frame is simply claimed and the new page put there, as shown in Fig. 4-7(d). On the other hand, if the page is dirty, it cannot be claimed immediately since no valid copy is present on disk. To
+avoid a process switch, the write to disk is scheduled, but the hand is advanced and the algorithm continues with the next page. After all, there might be an old, clean page further down the line that can be used immediately. In principle, all pages might be scheduled for disk I/O on one cycle around the clock. To reduce disk traffic, a limit might be set, allowing a maximum of n pages to be written back. Once this limit has been reached, no new writes are scheduled.
+
+5. Counting based rep. algorithm
+
+	similar to LRU algorithm but it depends on the page reference count.
+
+6. Optimum page rep. algorithm
+
+The best possible page replacement algorithm is easy to describe but impossible to implement. It goes like this. At the moment that a page fault occurs, some set of pages is in memory. One of these pages will be referenced on the very next instruction (the page containing that instruction). Other pages may not be referenced until 10, 100, or perhaps 1000 instructions later. Each page can be labeled with the number of instructions that will be executed before that page is first referenced. The optimal page algorithm simply says that the page with the highest label
+should be removed. If one page will not be used for 8 million instructions and another page will not be used for 6 million instructions, removing the former pushes the page fault that will fetch it back as far into the future as possible.
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+What is Virtual memory?
+
+
+Memory that appears to exist as main storage although most of it is supported by data held in secondary storage, transfer between the two being made automatically as required.
+---------------------------------------------------------------------------------------------------------------------------------------------
+What is a Page fault?
+
+A page fault (sometimes #pf or pf) is a trap to the software raised by the hardware when a program accesses a page that is mapped in the virtual address space, but not loaded in physical memory. In the typical case the operating system tries to handle the page fault by making the required page accessible at a location in physical memory or terminates the program in the case of an illegal access. The hardware that detects a page fault is the memory management unit in a processor. The exception handling software that handles the page fault is generally part of the operating system.
+
+What is the deciding factor in concluding best page replacement policy?
+
+Least Page fault rate is deciding factor of beat page replacement policy.
+
+
+
+After going through this project,
+
+You will come to learn about the techniques involved to page replacement policies.
+
+
+
+

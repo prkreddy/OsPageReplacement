@@ -22,38 +22,66 @@ public class SubmitActionListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
+		StringBuilder stringBuilder = new StringBuilder();
+		int count=0;
 		try
 		{
-			StringBuilder stringBuilder = new StringBuilder();
+
 			if (panel.getComparePolicies().isSelected())
 			{
 
 				if (panel.getNoOFFrameField() == null || "".equals(panel.getNoOFFrameField().getText()))
 				{
-					stringBuilder.append("noOfFrames1 Field is blank \n");
+					stringBuilder.append(++count+": \"No OF Frames1\" Field is blank \n");
+				} else
+				{
+
+					try
+					{
+						int temp = Integer.parseInt(panel.getNoOFFrameField().getText());
+					} catch (NumberFormatException ex)
+					{
+						stringBuilder.append(++count+": please enter numberic value in \"No OF Frames1\" Field\n");
+					}
 				}
 				if (panel.getPageReferencesField() == null || "".equals(panel.getPageReferencesField().getText()))
 				{
-					stringBuilder.append("pageReferenceField Field is blank \n");
+					stringBuilder.append(++count+": \"Page References\" Field is blank \n");
 				}
 			} else if (panel.getCompareBeladys().isSelected())
 			{
 				if (panel.getNoOFFrameField() == null || "".equals(panel.getNoOFFrameField().getText()))
 				{
-					stringBuilder.append("noOfFrames1 Field is blank \n");
+					stringBuilder.append(++count+": \"No OF Frames1\" Field is blank \n");
+				} else
+				{
+
+					try
+					{
+						int temp = Integer.parseInt(panel.getNoOFFrameField().getText());
+					} catch (NumberFormatException ex)
+					{
+						stringBuilder.append(++count+": please enter numberic value in \"No OF Frames1\" Field\n");
+					}
 				}
 				if (panel.getPageReferencesField() == null || "".equals(panel.getPageReferencesField().getText()))
 				{
-					stringBuilder.append("pageReferenceField Field is blank \n");
+					stringBuilder.append(++count+": \"Page References\" Field is blank \n");
 				}
 				if (panel.getNoOFFrameField1() == null || "".equals(panel.getNoOFFrameField1().getText()))
 				{
-					stringBuilder.append("noOfFrames2 Field is blank \n");
-				}
-			} else
-			{
-				stringBuilder.append("please fill required data to continue");
+					stringBuilder.append(++count+": \"No OF Frames2\" Field is blank \n");
+				} else
+				{
 
+					try
+					{
+						int temp = Integer.parseInt(panel.getNoOFFrameField1().getText());
+					} catch (NumberFormatException ex)
+					{
+						stringBuilder.append(++count+": please enter numberic value in \"No OF Frames2\" Field\n");
+					}
+				}
 			}
 
 			if (panel.getAllPolicies().isSelected())
@@ -74,13 +102,13 @@ public class SubmitActionListener implements ActionListener
 				}
 				if (!checkBoxSelected)
 				{
-					stringBuilder.append("please select atleast one policy on selecting specific policy checkbox");
+					stringBuilder.append(++count+": please select atleast one policy checkbox\n");
 
 				}
 
 			} else
 			{
-				stringBuilder.append("please select polices related data");
+				stringBuilder.append(++count+": please select polices related data\n");
 
 			}
 
@@ -88,8 +116,18 @@ public class SubmitActionListener implements ActionListener
 			{
 				if (panel.getWindowSizeField() == null || "".equals(panel.getWindowSizeField().getText()))
 				{
-					stringBuilder.append("windowSize field is blank");
+					stringBuilder.append(++count+": \nWindow size\" field is blank\n");
 
+				} else
+				{
+
+					try
+					{
+						int temp = Integer.parseInt(panel.getWindowSizeField().getText());
+					} catch (NumberFormatException ex)
+					{
+						stringBuilder.append(++count+": please enter numberic value in \nWindow size\" Field");
+					}
 				}
 			}
 
@@ -145,8 +183,7 @@ public class SubmitActionListener implements ActionListener
 
 		} catch (Exception ex)
 		{
-			ex.printStackTrace();
-
+			System.out.println(stringBuilder.toString());
 		}
 	}
 }
